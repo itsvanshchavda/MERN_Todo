@@ -16,14 +16,14 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cookieParser());
 app.use(
   cors({
-    origin:'*',
+    origin: 'http://localhost:5173', // allow to server to accept request from different origin
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 app.use(bodyParser.json());
 
-// Initialize dotenv configuration
+
 config({
   path: "./data/config.env",
 });
@@ -32,7 +32,6 @@ config({
 connectDB();
 
 // Define your routes using userRouter
-
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/task", taskRoutes);
 
