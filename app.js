@@ -16,8 +16,9 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cookieParser());
 app.use(
   cors({
-    origin:process.env.FRONTEND_URL,
+    origin:'*',
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 app.use(bodyParser.json());
