@@ -23,7 +23,6 @@ app.use(
 );
 app.use(bodyParser.json());
 
-
 config({
   path: "./data/config.env",
 });
@@ -31,7 +30,7 @@ config({
 // Connect to MongoDB
 connectDB();
 
-// Define your routes using userRouter
+// Mount routers
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/task", taskRoutes);
 

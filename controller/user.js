@@ -2,6 +2,7 @@ import { UserData } from "../models/userData.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import ErrorHandler from "../middleware/error.js";
+import { generateToken } from "../middleware/token.js";
 
 //get login users
 export const getMyProfile = (req, res) => {
@@ -28,7 +29,7 @@ export const registerUser = async (req, res, next) => {
 
     user = await UserData.create({ name, email, password: hashedPassword });
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+    const token = generateToken(user._id);
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -45,6 +46,7 @@ export const registerUser = async (req, res, next) => {
       token,
     });
   } catch (error) {
+    
     next(error);
   }
 };
@@ -66,7 +68,7 @@ export const loginUser = async (req, res, next) => {
       return next(new ErrorHandler("Invalid password or username", 400));
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+    const token = generateToken(user._id);
     console.log("Generated Token:", token);
 
     res.cookie("token", token, {
