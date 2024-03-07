@@ -20,7 +20,7 @@ export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   try {
-    let user = await UserData.findOne({ email });
+    let user = await UserData.findOne({ email, password });
 
     if (user) return next(new ErrorHandler("Invalid Email or Password", 400));
 
@@ -48,20 +48,21 @@ export const registerUser = async (req, res, next) => {
 };
 
 //login function
-
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    let user = await UserData.findOne({ email });
+    const user = await UserData.findOne({ email });
 
-    if (!user) return next(new ErrorHandler("Register First ", 404));
+    if (!user) {
+      return next(new ErrorHandler("Register First", 404));
+    }
 
-    const isMatch = await bcrypt.compare(password, hashedPassword);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch)
-      return next(new ErrorHandler("Invalid password and username", 400));
+    if (!isMatch) {
+      return next(new ErrorHandler("Invalid password or username", 400));
+    }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
 
@@ -74,7 +75,7 @@ export const loginUser = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: "Hello Sir " + user.name,
+      message: "Welcome " + user.name,
     });
   } catch (error) {
     next(error);

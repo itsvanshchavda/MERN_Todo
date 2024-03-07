@@ -6,7 +6,7 @@ export const isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-      return res.status(401).json({ message: "Plz , Login First" });
+      return res.status(401).json({ message: "Please, login first" });
     }
 
     // Verify the token
@@ -16,6 +16,12 @@ export const isAuthenticated = async (req, res, next) => {
 
     next();
   } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ message: "Token expired, please login again" });
+    }
+
     console.error("Error authenticating user:", err);
     return res.status(401).json({ message: "Unauthorized" });
   }
