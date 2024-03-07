@@ -32,10 +32,12 @@ export const registerUser = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      domain: ".localhost",
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV === "Development" ? false : true,
     });
+    
 
     return res.status(200).json({
       success: true,
@@ -69,10 +71,12 @@ export const loginUser = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      domain: ".localhost",
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV === "Development" ? false : true,
     });
+    
 
     return res.status(200).json({
       success: true,
@@ -88,6 +92,7 @@ export const logoutUser = (req, res) => {
     .status(200)
     .cookie("token", "", {
       expires: new Date(Date.now()),
+      httpOnly: true,
       sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV === "Development" ? false : true,
     })

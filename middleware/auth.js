@@ -3,6 +3,7 @@ import { UserData } from "../models/userData.js";
 
 export const isAuthenticated = async (req, res, next) => {
   try {
+    console.log("All Cookies:", req.cookies);
     const token = req.cookies.token;
     console.log("Retrieved Token:", token);
 
