@@ -65,6 +65,7 @@ export const loginUser = async (req, res, next) => {
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+    console.log("Generated Token:", token);
 
     res.cookie("token", token, {
       httpOnly: true,

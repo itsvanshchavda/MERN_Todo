@@ -4,6 +4,7 @@ import { UserData } from "../models/userData.js";
 export const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.cookies.token;
+    console.log("Retrieved Token:", token);
 
     if (!token) {
       return res.status(401).json({ message: "Please, login first" });
